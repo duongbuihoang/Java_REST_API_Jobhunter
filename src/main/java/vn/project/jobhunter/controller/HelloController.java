@@ -8,6 +8,6 @@ public class HelloController {
 
     @GetMapping("/")
     public String getHelloWorld() {
-        return "Hello World (Hỏi Dân IT) - Job Hunter Starte";
+        return "Hello World (Hỏi Dân IT) - Job Hunter Project";
     }
 }

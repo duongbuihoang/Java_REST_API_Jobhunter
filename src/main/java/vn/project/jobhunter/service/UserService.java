@@ -1,5 +1,8 @@
 package vn.project.jobhunter.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.project.jobhunter.domain.User;
@@ -13,8 +16,37 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void handleCreateUser(User user) {
-        this.userRepository.save(user);
+    public User handleCreateUser(User user) {
+        return this.userRepository.save(user);
+    }
+
+    public void handleDeleteUser(long id) {
+        this.userRepository.deleteById(id);
+    }
+
+    public User handleUpdateUser(User reqUser) {
+        User currentuser = this.fetchUserById(reqUser.getId());
+        if (currentuser != null) {
+            currentuser.setUsername(reqUser.getUsername());
+            currentuser.setPassword(reqUser.getPassword());
+            currentuser.setEmail(reqUser.getEmail());
+            // update
+            currentuser = this.userRepository.save(currentuser);
+        }
+        return currentuser;
+    }
+
+    public User fetchUserById(long id) {
+        Optional<User> userOptional = this.userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            return null;
+        }
+    }
+
+    public List<User> fetchAllUser() {
+        return this.userRepository.findAll();
     }
 
 }
