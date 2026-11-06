@@ -18,14 +18,14 @@ import vn.project.jobhunter.domain.RestResponse;
 @RestControllerAdvice
 public class GlobalException {
     @ExceptionHandler(value = {
-            IdInvalidException.class,
+            // IdInvalidException.class,
             UsernameNotFoundException.class,
             BadCredentialsException.class,
     })
-    public ResponseEntity<RestResponse<Object>> handleIdInvalidException(IdInvalidException idException) {
+    public ResponseEntity<RestResponse<Object>> handleIdInvalidException(Exception ex) {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
-        res.setError(idException.getMessage());
+        res.setError(ex.getMessage());
         res.setMessage("InvalidException");
 
         return ResponseEntity.badRequest().body(res);
