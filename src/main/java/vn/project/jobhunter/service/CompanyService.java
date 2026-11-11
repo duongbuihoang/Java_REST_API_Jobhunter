@@ -1,12 +1,14 @@
 package vn.project.jobhunter.service;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import jakarta.validation.Valid;
 import vn.project.jobhunter.domain.Company;
+import vn.project.jobhunter.domain.dto.Meta;
+import vn.project.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.project.jobhunter.repository.CompanyRepository;
 
 @Service
@@ -21,8 +23,20 @@ public class CompanyService {
         return this.companyRepository.save(reqCompany);
     }
 
-    public List<Company> handleGetAllCompanies() {
-        return this.companyRepository.findAll();
+    public ResultPaginationDTO fetchAllCompany(Pageable pageable) {
+        Page<Company> companyPage = this.companyRepository.findAll(pageable);
+        ResultPaginationDTO resultPaginationDTO = new ResultPaginationDTO();
+        Meta meta = new Meta();
+
+        meta.setPage(companyPage.getNumber() + 1);
+        meta.setPageSize(companyPage.getSize());
+        meta.setPages(companyPage.getTotalPages());
+        meta.setTotal(companyPage.getTotalElements());
+
+        resultPaginationDTO.setMeta(meta);
+        resultPaginationDTO.setResult(companyPage.getContent());
+
+        return resultPaginationDTO;
     }
 
     public Company handleUpdateCompany(Company reqCompany) {
