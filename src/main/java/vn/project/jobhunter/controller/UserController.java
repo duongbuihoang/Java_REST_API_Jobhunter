@@ -2,6 +2,8 @@ package vn.project.jobhunter.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.turkraft.springfilter.boot.Filter;
+
 import vn.project.jobhunter.domain.User;
 import vn.project.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.project.jobhunter.repository.UserRepository;
@@ -13,6 +15,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,12 +76,18 @@ public class UserController {
     // fetch all user
     @GetMapping("/users")
     public ResponseEntity<ResultPaginationDTO> getAllUsers(
-            @RequestParam("current") Optional<String> currentOptional,
-            @RequestParam("pageSize") Optional<String> pageSizeOptional) {
-        String current = currentOptional.isPresent() ? currentOptional.get() : "";
-        String pageSize = pageSizeOptional.isPresent() ? pageSizeOptional.get() : "";
-        Pageable pageable = PageRequest.of(Integer.parseInt(current) - 1, Integer.parseInt(pageSize));
-        return ResponseEntity.ok(this.userService.fetchAllUser(pageable));
+            @Filter Specification<User> specification,
+            Pageable pageable) {
+
+        // @RequestParam("current") Optional<String> currentOptional,
+        // @RequestParam("pageSize") Optional<String> pageSizeOptional){
+
+        // String current = currentOptional.isPresent() ? currentOptional.get() : "";
+        // String pageSize = pageSizeOptional.isPresent() ? pageSizeOptional.get() : "";
+        // Pageable pageable = PageRequest.of(Integer.parseInt(current) - 1,
+        // Integer.parseInt(pageSize));
+
+        return ResponseEntity.ok(this.userService.fetchAllUser(specification, pageable));
     }
 
     // update user info

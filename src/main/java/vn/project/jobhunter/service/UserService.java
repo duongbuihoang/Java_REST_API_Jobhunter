@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.project.jobhunter.domain.User;
@@ -49,8 +50,8 @@ public class UserService {
         }
     }
 
-    public ResultPaginationDTO fetchAllUser(Pageable pageable) {
-        Page<User> userPage = this.userRepository.findAll(pageable);
+    public ResultPaginationDTO fetchAllUser(Specification<User> specification, Pageable pageable) {
+        Page<User> userPage = this.userRepository.findAll(specification, pageable);
         ResultPaginationDTO resultPaginationDTO = new ResultPaginationDTO();
         Meta meta = new Meta();
 
