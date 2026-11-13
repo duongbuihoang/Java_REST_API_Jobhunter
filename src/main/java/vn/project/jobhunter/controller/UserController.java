@@ -8,6 +8,7 @@ import vn.project.jobhunter.domain.User;
 import vn.project.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.project.jobhunter.repository.UserRepository;
 import vn.project.jobhunter.service.UserService;
+import vn.project.jobhunter.util.annotation.ApiMessage;
 import vn.project.jobhunter.util.error.IdInvalidException;
 
 import java.util.List;
@@ -26,9 +27,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
+@RequestMapping("/api/v1")
 public class UserController {
 
     private final UserService userService;
@@ -75,6 +78,7 @@ public class UserController {
 
     // fetch all user
     @GetMapping("/users")
+    @ApiMessage("Fetch all users with optional filtering and pagination")
     public ResponseEntity<ResultPaginationDTO> getAllUsers(
             @Filter Specification<User> specification,
             Pageable pageable) {
